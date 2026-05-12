@@ -259,8 +259,4 @@ Response:
 
 <div align="center">
 
-*Built with 🔥 by Team VEXA · Hackathon 2025*
-
-*Protecting every ₹ in motion*
-
 </div>
