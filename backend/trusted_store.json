@@ -1,0 +1,22 @@
+{
+  "food delivery": {
+    "merchant": "Food Delivery",
+    "marked_by": "analyst"
+  },
+  "grocery": {
+    "merchant": "Grocery",
+    "marked_by": "analyst"
+  },
+  "medical": {
+    "merchant": "Medical",
+    "marked_by": "analyst"
+  },
+  "utility": {
+    "merchant": "Utility",
+    "marked_by": "analyst"
+  },
+  "crypto exchange": {
+    "merchant": "Crypto Exchange",
+    "marked_by": "analyst"
+  }
+}
