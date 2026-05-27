@@ -290,8 +290,7 @@ POST /check_fraud
 ### 🖥️ Fraud Detection Console — Overview
 > Clean analyst dashboard on startup — 5 live stat cards, transaction log with filter pills, and the New Transaction panel.
 
-![Dashboard Overview](https://raw.githubusercontent.com/TeamVEXA/VEXA-FraudDetection/main/assets/dashboard.png)
-
+https://github.com/TeamVEXA/VEXA-FraudDetection/blob/main/assets/dashboard.png.png?raw=true
 ---
 
 ### 🔴 Fraud Detection in Action
