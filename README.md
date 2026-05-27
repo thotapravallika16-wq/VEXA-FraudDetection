@@ -124,7 +124,6 @@ VEXA-FraudDetection/
 │   ├── fraud_detection.png     # Fraud result + explainability
 │   ├── review_detection.png    # Review result
 │   ├── trusted_registry.png    # Trusted auto-clear
-│   └── VEXA_W4_C2.png          # Shark Tank poster
 │
 ├── README.md
 └── .gitignore
@@ -312,12 +311,6 @@ https://github.com/TeamVEXA/VEXA-FraudDetection/blob/main/assets/review_detectio
 > After marking Crypto Exchange as trusted — same transaction returns score 0.00, status **TRUSTED**, accuracy 100%. Zero false positives.
 
 https://github.com/TeamVEXA/VEXA-FraudDetection/blob/main/assets/trusted_registry.png.png?raw=true
-
----
-
-### 🦈 Shark Tank Poster
-
-[Open Shark Tank File](assets/VEXA_W4_C2.html)
 
 ---
 
