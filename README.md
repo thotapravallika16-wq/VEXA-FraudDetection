@@ -291,30 +291,33 @@ POST /check_fraud
 > Clean analyst dashboard on startup — 5 live stat cards, transaction log with filter pills, and the New Transaction panel.
 
 https://github.com/TeamVEXA/VEXA-FraudDetection/blob/main/assets/dashboard.png.png?raw=true
+
 ---
 
 ### 🔴 Fraud Detection in Action
 > Amount ₹5,00,000 + Crypto Exchange → Score 0.76 → **FRAUD** flagged with explainability panel showing exact risk factor weights.
 
-![Fraud Detection](https://raw.githubusercontent.com/TeamVEXA/VEXA-FraudDetection/main/assets/fraud_detection.png)
-
+https://github.com/TeamVEXA/VEXA-FraudDetection/blob/main/assets/fraud_detection.png.png?raw=true
 
 ---
 
 ### 🟡 Manual Review Triggered
 > Amount ₹50,000 + Crypto Exchange → Score 0.61 → **REVIEW** flagged for manual analyst action. Alert banner fires automatically.
 
-![Review Detection](https://raw.githubusercontent.com/TeamVEXA/VEXA-FraudDetection/main/assets/review_detection.png)
+https://github.com/TeamVEXA/VEXA-FraudDetection/blob/main/assets/review_detection.png.png?raw=true
+
 ---
 
 ### ⭐ Trusted Registry — Auto-Clear
 > After marking Crypto Exchange as trusted — same transaction returns score 0.00, status **TRUSTED**, accuracy 100%. Zero false positives.
 
-![Trusted Registry](https://raw.githubusercontent.com/TeamVEXA/VEXA-FraudDetection/main/assets/trusted_registry.png)
+https://github.com/TeamVEXA/VEXA-FraudDetection/blob/main/assets/trusted_registry.png.png?raw=true
+
 ---
 
 ### 🦈 Shark Tank Poster
-![VEXA Poster](assets/VEXA_W4_C2.png)
+
+[Open Shark Tank File](assets/VEXA_W4_C2.html)
 
 ---
 
