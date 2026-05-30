@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>VEXA — Fraud Detection System</title>
+  <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+</head>
+<body>
+ 
+  <!-- ───── NAVBAR ───── -->
+  <nav class="navbar">
+    <div class="nav-left">-
+      <div class="brand">
+        <div class="brand-icon">V</div>
+        <div>
+          <span class="brand-name">VEXA</span>
+          <span class="brand-sub">FRAUD INTELLIGENCE</span>
+        </div>
+      </div>
+      <div class="nav-tabs">
+        <div class="nav-tab active" id="tab-dashboard" onclick="switchView('dashboard')">Dashboard</div>
+        <div class="nav-tab" id="tab-analytics" onclick="switchView('analytics')">Analytics</div>
+        <div class="nav-tab" id="tab-reports" onclick="switchView('reports')">Reports</div>
+      </div>
+    </div>
+    <div class="nav-right">
+      <div class="live-pill">
+        <span class="live-dot"></span> LIVE
+      </div>
+      <span class="problem-id">FF-02-S3</span>
+      <div class="avatar">FA</div>
+    </div>
+  </nav>
+ 
+  <!-- ───── STAT CARDS ───── -->
+  <section class="stats-row">
+    <div class="stat-card blue">
+      <div class="stat-label">Total Transactions</div>
+      <div class="stat-value blue" id="s-total">1,247</div>
+      <div class="stat-sub">Today • UPI + IMPS + NEFT</div>
+    </div>
+    <div class="stat-card red">
+      <div class="stat-label">Fraud Flagged</div>
+      <div class="stat-value red" id="s-fraud">18</div>
+      <div class="stat-sub">Requires immediate action</div>
+    </div>
+    <div class="stat-card green">
+      <div class="stat-label">Safe Passed</div>
+      <div class="stat-value green" id="s-safe">1,229</div>
+      <div class="stat-sub">Cleared instantly</div>
+    </div>
+    <div class="stat-card amber">
+      <div class="stat-label">Detection Rate</div>
+      <div class="stat-value amber">98.6%</div>
+      <div class="stat-sub">Model accuracy • SMOTE trained</div>
+    </div>
+  </section>
+ 
+  <!-- ───── MAIN LAYOUT ───── -->
+  <main class="main-layout" id="dashboard-view">
+ 
+    <!-- LEFT: TRANSACTION FEED -->
+    <section class="feed-section">
+      <div class="section-header">
+        <div class="section-title-wrap">
+          <span class="section-dot"></span>
+          <span class="section-title">Live Transaction Feed</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;">
+          <div class="filter-pills">
+            <span class="fpill active" data-filter="all" onclick="filterTransactions('all')">All</span>
+            <span class="fpill" data-filter="fraud" onclick="filterTransactions('fraud')">Fraud</span>
+            <span class="fpill" data-filter="review" onclick="filterTransactions('review')">Review</span>
+            <span class="fpill" data-filter="safe" onclick="filterTransactions('safe')">Safe</span>
+          </div>
+          <button class="batch-btn" onclick="openBatchPanel()">
+            <span style="font-size:13px;">⬆</span> Batch Import
+          </button>
+        </div>
+      </div>
+ 
+      <!-- Alert Banner -->
+      <div class="alert-banner" id="alert-banner">
+        <span class="alert-dot"></span>
+        <span id="alert-text">FRAUD DETECTED — Velocity limit exceeded. Account frozen. OTP dispatched.</span>
+      </div>
+ 
+      <!-- Table -->
+      <table class="txn-table">
+        <thead>
+          <tr>
+            <th>TXN ID</th>
+            <th>User</th>
+            <th>Amount</th>
+            <th>Merchant</th>
+            <th>Time</th>
+            <th>Fraud Score</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody id="txn-body">
+          <tr class="row-fraud">
+            <td class="txn-id fraud-id">#TXN8821</td>
+            <td>usr_4412</td>
+            <td class="amount">₹82,500</td>
+            <td>UnknownMerch</td>
+            <td>02:47 AM</td>
+            <td>
+              <div class="score-wrap">
+                <div class="score-track"><div class="score-fill" style="width:87%;background:#ef4444"></div></div>
+                <span class="score-num" style="color:#f87171">0.87</span>
+              </div>
+            </td>
+            <td><span class="badge fraud"><span class="bdot"></span>FRAUD</span></td>
+          </tr>
+          <tr>
+            <td class="txn-id">#TXN8820</td>
+            <td>usr_2291</td>
+            <td class="amount">₹1,200</td>
+            <td>Swiggy</td>
+            <td>02:45 AM</td>
+            <td>
+              <div class="score-wrap">
+                <div class="score-track"><div class="score-fill" style="width:4%;background:#22c55e"></div></div>
+                <span class="score-num" style="color:#4ade80">0.04</span>
+              </div>
+            </td>
+            <td><span class="badge safe"><span class="bdot"></span>SAFE</span></td>
+          </tr>
+          <tr class="row-review">
+            <td class="txn-id review-id">#TXN8819</td>
+            <td>usr_7731</td>
+            <td class="amount">₹45,000</td>
+            <td>NewDevice</td>
+            <td>02:43 AM</td>
+            <td>
+              <div class="score-wrap">
+                <div class="score-track"><div class="score-fill" style="width:62%;background:#f59e0b"></div></div>
+                <span class="score-num" style="color:#fbbf24">0.62</span>
+              </div>
+            </td>
+            <td><span class="badge review"><span class="bdot"></span>REVIEW</span></td>
+          </tr>
+          <tr>
+            <td class="txn-id">#TXN8818</td>
+            <td>usr_1102</td>
+            <td class="amount">₹350</td>
+            <td>Amazon</td>
+            <td>02:40 AM</td>
+            <td>
+              <div class="score-wrap">
+                <div class="score-track"><div class="score-fill" style="width:7%;background:#22c55e"></div></div>
+                <span class="score-num" style="color:#4ade80">0.07</span>
+              </div>
+            </td>
+            <td><span class="badge safe"><span class="bdot"></span>SAFE</span></td>
+          </tr>
+          <tr class="row-fraud">
+            <td class="txn-id fraud-id">#TXN8817</td>
+            <td>usr_9981</td>
+            <td class="amount">₹1,20,000</td>
+            <td>CryptoEx</td>
+            <td>02:38 AM</td>
+            <td>
+              <div class="score-wrap">
+                <div class="score-track"><div class="score-fill" style="width:94%;background:#ef4444"></div></div>
+                <span class="score-num" style="color:#f87171">0.94</span>
+              </div>
+            </td>
+            <td><span class="badge fraud"><span class="bdot"></span>FRAUD</span></td>
+          </tr>
+          <tr>
+            <td class="txn-id">#TXN8816</td>
+            <td>usr_3341</td>
+            <td class="amount">₹500</td>
+            <td>Zomato</td>
+            <td>02:35 AM</td>
+            <td>
+              <div class="score-wrap">
+                <div class="score-track"><div class="score-fill" style="width:3%;background:#22c55e"></div></div>
+                <span class="score-num" style="color:#4ade80">0.03</span>
+              </div>
+            </td>
+            <td><span class="badge safe"><span class="bdot"></span>SAFE</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+ 
+    <!-- RIGHT: SIMULATION + EXPLAINABILITY -->
+    <aside class="right-panel">
+ 
+      <!-- Simulation Box -->
+      <div class="sim-box">
+        <div class="sim-header">
+          <span class="sim-icon">▶</span>
+          <span class="sim-title">Fire Test Transaction</span>
+        </div>
+        <div class="sim-body">
+          <div class="field">
+            <label class="field-label">Amount (₹)</label>
+            <input class="sim-input" type="number" id="s-amount" value="75000" placeholder="e.g. 75000"/>
+          </div>
+          <div class="grid2">
+            <div class="field">
+              <label class="field-label">Merchant</label>
+              <select class="sim-select" id="s-merchant">
+                <option value="unknown">Unknown</option>
+                <option value="crypto">Crypto Exchange</option>
+                <option value="food">Food Delivery</option>
+                <option value="ecomm">E-Commerce</option>
+              </select>
+            </div>
+            <div class="field">
+              <label class="field-label">Device</label>
+              <select class="sim-select" id="s-device">
+                <option value="new">New Device</option>
+                <option value="known">Known Device</option>
+              </select>
+            </div>
+          </div>
+          <div class="field">
+            <label class="field-label">Time Window</label>
+            <select class="sim-select" id="s-time">
+              <option value="night">2 AM – 4 AM (High Risk)</option>
+              <option value="morning">9 AM – 11 AM</option>
+              <option value="evening">6 PM – 9 PM</option>
+            </select>
+          </div>
+          <button class="run-btn" onclick="runCheck()">Run Fraud Check →</button>
+        </div>
+      </div>
+ 
+      <!-- Explainability Card -->
+      <div class="why-box">
+        <div class="why-header">
+          <div class="why-title-wrap">
+            <span class="section-dot"></span>
+            <span class="why-title">Explainability — Why Flagged</span>
+          </div>
+          <div class="score-display">
+            <div class="big-score" id="big-score" style="color:#f87171">0.87</div>
+            <div class="score-label">Fraud Score</div>
+          </div>
+        </div>
+        <div class="why-body" id="why-body">
+          <div class="why-item">
+            <div class="why-icon up">↑</div>
+            <div class="why-content">
+              <div class="why-name">Amount 4x above average</div>
+              <div class="why-desc">₹82,500 vs usual ₹18,000</div>
+            </div>
+          </div>
+          <div class="why-item">
+            <div class="why-icon warn">!</div>
+            <div class="why-content">
+              <div class="why-name">New device detected</div>
+              <div class="why-desc">First transaction from this phone</div>
+            </div>
+          </div>
+          <div class="why-item">
+            <div class="why-icon info">☾</div>
+            <div class="why-content">
+              <div class="why-name">Unusual hour — 2:47 AM</div>
+              <div class="why-desc">Outside normal activity window</div>
+            </div>
+          </div>
+        </div>
+        <button class="freeze-btn" id="freeze-btn" onclick="freezeAccount()">
+          ⏸ Freeze Account + Send OTP
+        </button>
+      </div>
+ 
+      <div class="security-box">
+        <div class="sim-header">
+          <span class="sim-icon">🔒</span>
+          <span class="sim-title">Advanced Account Security</span>
+        </div>
+        <div class="sim-body">
+          <div class="security-item">
+            <div class="security-item-label">Block outgoing transactions</div>
+            <button class="security-toggle-btn" id="block-txn-btn" onclick="toggleBlockTransactions()">Enable Block</button>
+          </div>
+          <div class="security-item">
+            <div class="security-item-label">Require OTP for risky transactions</div>
+            <button class="security-toggle-btn" id="otp-toggle-btn" onclick="toggleOtpRequirement()">OTP On</button>
+          </div>
+          <div class="security-item">
+            <div class="security-item-label">Device verification for new devices</div>
+            <button class="security-toggle-btn" id="device-sec-btn" onclick="toggleDeviceVerification()">Device Verify On</button>
+          </div>
+          <div class="security-status" id="security-status-text">Advanced security active.</div>
+        </div>
+      </div>
+    </aside>
+  </main>
+
+  <section id="analytics-view" class="hidden-section analytics-section">
+    <div class="section-header">
+      <div class="section-title-wrap">
+        <span class="section-dot"></span>
+        <span class="section-title">Analytics Dashboard</span>
+      </div>
+    </div>
+    <div class="analytics-grid">
+      <div class="analytic-card">
+        <div class="stat-label">Total Reported Txns</div>
+        <div class="stat-value" id="analytics-total">0</div>
+      </div>
+      <div class="analytic-card">
+        <div class="stat-label">Fraud Alerts</div>
+        <div class="stat-value" id="analytics-fraud">0</div>
+      </div>
+      <div class="analytic-card">
+        <div class="stat-label">Safe Transactions</div>
+        <div class="stat-value" id="analytics-safe">0</div>
+      </div>
+      <div class="analytic-card">
+        <div class="stat-label">Review Risk</div>
+        <div class="stat-value" id="analytics-review">0</div>
+      </div>
+    </div>
+    <div class="analytics-chart">
+      <div class="analytics-chart-row">
+        <div class="analytics-label">Safe</div>
+        <div class="analytics-track"><div id="safe-chart-bar" class="analytics-fill"></div></div>
+        <div class="analytics-value" id="analytics-safe-label">0</div>
+      </div>
+      <div class="analytics-chart-row">
+        <div class="analytics-label">Fraud</div>
+        <div class="analytics-track"><div id="fraud-chart-bar" class="analytics-fill fraud-fill"></div></div>
+        <div class="analytics-value" id="analytics-fraud-label">0</div>
+      </div>
+      <div class="analytics-chart-row">
+        <div class="analytics-label">Review</div>
+        <div class="analytics-track"><div id="review-chart-bar" class="analytics-fill review-fill"></div></div>
+        <div class="analytics-value" id="analytics-review-label">0</div>
+      </div>
+    </div>
+  </section>
+
+  <section id="reports-view" class="hidden-section reports-section">
+    <div class="section-header">
+      <div class="section-title-wrap">
+        <span class="section-dot"></span>
+        <span class="section-title">Stored Reports</span>
+      </div>
+      <div class="stat-label" id="reports-count">0 reports stored</div>
+    </div>
+    <div class="report-table-wrap">
+      <table class="report-table">
+        <thead>
+          <tr>
+            <th>Time</th>
+            <th>Status</th>
+            <th>Amount</th>
+            <th>Merchant</th>
+            <th>Score</th>
+          </tr>
+        </thead>
+        <tbody id="reports-table-body"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ───── BATCH IMPORT PANEL ───── -->
+  <div class="batch-overlay" id="batch-overlay" onclick="closeBatchPanel(event)">
+    <div class="batch-panel" id="batch-panel">
+      <div class="batch-panel-header">
+        <div style="display:flex;align-items:center;gap:10px;">
+          <div class="sim-icon" style="background:#1a2e50;">⬆</div>
+          <div>
+            <div class="sim-title">Batch Transaction Import</div>
+            <div style="font-size:10px;color:var(--text-dim);font-family:var(--font-mono);margin-top:2px;">Paste receipts, bank statements, or describe transactions in plain text</div>
+          </div>
+        </div>
+        <button class="batch-close-btn" onclick="closeBatchPanel()">&#x2715;</button>
+      </div>
+
+      <div class="batch-panel-body">
+        <div class="batch-input-wrap">
+          <label class="field-label">Transaction Data</label>
+          <textarea class="batch-textarea" id="batch-input" placeholder="Paste anything — bank statement rows, receipts, or plain English:
+
+• ₹82,500 to UnknownMerch at 2am from new phone
+• Amazon ₹350, morning, regular device
+• CryptoEx transfer ₹1,20,000 night new device
+• Swiggy ₹250 lunch known phone
+
+Or paste raw CSV / statement text..."></textarea>
+          <div class="batch-hint">
+            <span style="color:var(--blue);font-size:11px;font-family:var(--font-mono);">AI-powered</span>
+            <span style="color:var(--text-dim);font-size:11px;font-family:var(--font-mono);">— Claude will parse &amp; score each transaction automatically</span>
+          </div>
+        </div>
+
+        <div style="display:flex;gap:10px;align-items:center;">
+          <button class="run-btn" id="batch-run-btn" onclick="runBatchImport()" style="flex:1;margin-top:0;">
+            Parse &amp; Run Fraud Check &#x2192;
+          </button>
+          <button class="batch-clear-btn" onclick="document.getElementById('batch-input').value=''">Clear</button>
+        </div>
+
+        <div class="batch-progress" id="batch-progress" style="display:none;">
+          <div class="batch-progress-bar" id="batch-progress-bar"></div>
+          <div style="display:flex;justify-content:space-between;margin-top:6px;">
+            <span class="batch-status-text" id="batch-status-text">Parsing transactions...</span>
+            <span class="batch-status-text" id="batch-count-text"></span>
+          </div>
+        </div>
+
+        <div id="batch-results" style="display:none;">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
+            <label class="field-label" style="margin:0;">Parsed Transactions</label>
+            <span class="batch-status-text" id="batch-result-count"></span>
+          </div>
+          <div class="batch-results-list" id="batch-results-list"></div>
+          <button class="run-btn" id="batch-add-btn" onclick="addBatchToFeed()" style="margin-top:12px;">
+            Add All to Live Feed &#x2192;
+          </button>
+        </div>
+
+        <div id="batch-error" style="display:none;" class="batch-error-box">
+          <span style="font-size:13px;">&#x26A0;</span>
+          <span id="batch-error-text"></span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
